@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon_install_light.svg</file>
+        <file>split_line.svg</file>
+        <file>icon_install_light_resized.svg</file>
+        <file>box-seam.png</file>
+        <file>box-seam1.png</file>
+        <file>box-seam2.png</file>
+        <file>rpm.svg</file>
+    </qresource>
+</RCC>

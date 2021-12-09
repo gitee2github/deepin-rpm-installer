@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=System;Qt;
+Comment=install rpm
+Exec=rpminstaller %F
+GenericName=rpm-installer
+MimeType=application/x-rpm
+Name=RPMInstaller
+Type=Application
