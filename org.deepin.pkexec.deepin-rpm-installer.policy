@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+"-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+"http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
+<policyconfig>
+    <vendor>UnionTech</vendor>
+    <vendor_url>https://www.chinauos.com</vendor_url>
+    <action id="org.deepin.pkexec.deepin-rpm-installer">
+        <icon_name>application-x-rpm</icon_name>
+        <message>Authentication is required to install or uninstall packages</message>
+        <defaults>
+            <allow_any>no</allow_any>
+            <allow_inactive>yes</allow_inactive>
+            <allow_active>auth_self_keep</allow_active>
+        </defaults>   
+        <message xml:lang="zh_CN">安装或移除软件包需要进行认证</message>   
+        <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/deepin-rpminstaller-dnfpy</annotate>
+        <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
+    </action>
+</policyconfig> 
+
