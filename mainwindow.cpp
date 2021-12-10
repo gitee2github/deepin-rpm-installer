@@ -1,10 +1,10 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 #include "dragdropfilearea.h"
 #include "installthread.h"
 #include "pkgdetaildialog.h"
 
+#include <QApplication>
 #include <QDesktopWidget>
 #include <QVBoxLayout>
 #include <QPushButton>
@@ -16,20 +16,15 @@
 #include <QPainter>
 #include <QTextEdit>
 
-MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :   // 直接通过构造器来搞
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
     setWindowTitle("RPM 安装器");
 
     // 下面两行让窗口创建在屏幕正中间
     QDesktopWidget *desktop = QApplication::desktop();
     setFixedSize(550,350);
     move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
-
-    delete ui->mainToolBar;         // 不需要 toolbar ，删掉
-    delete ui->statusBar;
 
     this->setArgc(argc);
     this->getArgc();
@@ -70,7 +65,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :   // 直接通�
         buttonSelectRPM->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
         buttonSelectRPM->setFixedWidth(200);
 
-        // 通过这种方式，把按钮的事件（clicked）和处理函数“连接”起来
         connect(buttonSelectRPM, &QPushButton::clicked, this, &MainWindow::selectRpmBtnHandler);
 
         mainLayout->addWidget(installIconLabel, 0, Qt::AlignCenter);
@@ -93,7 +87,6 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :   // 直接通�
 
 MainWindow::~MainWindow()
 {
-    delete ui;
     delete installThread;
     installThread = nullptr;
 }
