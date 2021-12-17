@@ -11,7 +11,7 @@
 
 #include <QVector>
 
-#include "datastructs.h"
+#include "common/datastructs.h"
 
 class PkgDetailDialog : public QDialog
 {
