@@ -2,6 +2,6 @@
 /dnfpy/dist
 /dnfpy/__pycache__
 /dnfpy/dnfpy.spec
-/dnfpy/uniontech-rpm-installer-dnfpy.spec
-uos-rpminstaller.pro.user*
+/dnfpy/rpminstaller-dnfpy.spec
+*.pro.user
 Makefile
