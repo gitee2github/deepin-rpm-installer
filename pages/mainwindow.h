@@ -9,12 +9,8 @@
 #include <QVector>
 #include <QTextEdit>
 
-#include "datastructs.h"
-#include "installthread.h"
-
-namespace Ui {
-class MainWindow;
-}
+#include "common/datastructs.h"
+#include "common/installthread.h"
 
 class MainWindow : public QMainWindow
 {
@@ -30,8 +26,6 @@ public:
     bool setArgPath(std::string);
     std::string getArgPath();
 
-    std::string selectRpmBtnHandler();
-
     void callShell();
     void sendNotify();
 
@@ -42,7 +36,6 @@ public:
     void loadRpmInfo();
 
 private:
-    Ui::MainWindow *ui;
     QLabel *helloLabel;         // 该类的实例，也就是主窗口，应该可以用这玩意
     int argCount;
     std::string argPath;
@@ -54,8 +47,6 @@ private:
     InstallThread *installThread = nullptr;
 
 public slots:
-    void dropFileHandler(QString filename);
-
     void onRPMInfoLoaded(QVector<RPMInfoStruct> rpmArray);
 
     void appendLog(QString log);
@@ -67,6 +58,8 @@ public slots:
     void exitOnFinished();
 
     void showMoreInfoDialog();
+
+    void gotRpmHandler(QString filename);
 };
 
 #endif // MAINWINDOW_H

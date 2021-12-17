@@ -1,8 +1,8 @@
 #include "mainwindow.h"
-
-#include "dragdropfilearea.h"
-#include "installthread.h"
-#include "pkgdetaildialog.h"
+#include "common/dragdropfilearea.h"
+#include "common/installthread.h"
+#include "pages/pkgdetaildialog.h"
+#include "pages/selectpage.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -16,7 +16,7 @@
 #include <QPainter>
 #include <QTextEdit>
 
-MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :
+MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :   // 直接通过构造器来搞
     QMainWindow(parent)
 {
     setWindowTitle("RPM 安装器");
@@ -28,57 +28,11 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :
 
     this->setArgc(argc);
     this->getArgc();
-    if(argc==1) {
-        // 没有启动参数输入，应该是啥也不干. 选择文件安装的界面应该在这里面绘制
-        // TODO: 把这玩意抽出去，单独封装一下
-        QWidget *mainContentWid = new QWidget;          // MainWindow 中的 Content，其实是个装 QVBoxLayout 的容器
-                                                        // 这玩意的正确用法，或许应该是单拿出去做个类，和 main 拆开
-
-        QVBoxLayout *mainLayout = new QVBoxLayout;      // 定义 QVBoxLayout
-        mainContentWid->setLayout(mainLayout);          // 设置布局
-
-        QPixmap *pixmap = new QPixmap();                // 多种格式的图片都可以存为 pixmap
-
-        QSvgRenderer svgRender(QString(":/icon_install_light_resized.svg"));   // 使用 painter 和 renderer
-        QImage image(200, 200, QImage::Format_ARGB32);
-        image.fill(0x00FFFFFF);
-        QPainter painter(&image);
-        svgRender.render(&painter);
-
-        pixmap->convertFromImage(image);
-
-        DragDropFileArea *installIconLabel = new DragDropFileArea();
-        installIconLabel->setPixmap(*pixmap);
-        connect(installIconLabel, &DragDropFileArea::fileDropped, this, &MainWindow::dropFileHandler);
-
-        QPixmap splitLinePixmap;
-        splitLinePixmap.load(":/split_line.svg");
-        QLabel * splitLine = new QLabel();
-        splitLine->setPixmap(splitLinePixmap);
-
-        QLabel *dropHereText = new QLabel();
-        dropHereText->setText("拖拽 rpm 包到此");
-
-        // 按钮尺寸相关见：https://blog.csdn.net/hyongilfmmm/article/details/83015729
-        QPushButton *buttonSelectRPM = new QPushButton("选择 rpm 包文件");
-        buttonSelectRPM->setStyleSheet("QPushButton{color:#0099FF; background-color:transparent; font-size:12px}");
-        buttonSelectRPM->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-        buttonSelectRPM->setFixedWidth(200);
-
-        connect(buttonSelectRPM, &QPushButton::clicked, this, &MainWindow::selectRpmBtnHandler);
-
-        mainLayout->addWidget(installIconLabel, 0, Qt::AlignCenter);
-        mainLayout->addWidget(dropHereText, 0, Qt::AlignCenter);
-        mainLayout->addSpacing(10);
-        mainLayout->addWidget(splitLine, 0, Qt::AlignCenter);
-        mainLayout->addSpacing(10);
-        mainLayout->addWidget(buttonSelectRPM, 0, Qt::AlignCenter);
-        mainLayout->addStretch();
-
-        this->setCentralWidget(mainContentWid);
-
-    } else {
-        // 这里有参数输入了，先不管连续输入多个的情况，只管装第一个
+    if(argc==1) {                                                   // 没有启动参数输入，初始化文件选择界面
+        SelectPage *selectPage = new SelectPage();
+        setCentralWidget(selectPage);
+        connect(selectPage, &SelectPage::filenameReceived, this, &MainWindow::gotRpmHandler);      // 接收选择的文件（拖放 / 文件选择器选择）
+    } else {                    // 这里有参数输入了，目前无视连续输入多个的情况，只会处理第一个
         this->setArgPath(std::string(argv[1]));
         loadRpmInfo();
     }
@@ -113,24 +67,6 @@ std::string MainWindow::getArgPath()
 {
     qDebug("this->argPath = %s", this->argPath.c_str());
     return this->argPath;
-}
-
-std::string MainWindow::selectRpmBtnHandler()
-{
-    std::string res = "";
-    QString fileName = QFileDialog::getOpenFileName(nullptr, "打开文件", QDir::homePath(), "*.rpm");
-    bool isSelectSuccess = true;
-    if(fileName.isEmpty()) {
-        isSelectSuccess = false;
-    }
-    if(isSelectSuccess) {   // 选择成功的情况
-        this->setArgPath(fileName.toStdString());
-        loadRpmInfo();      // 开始加载信息，显示加载中界面
-    } else {
-        // 这里留给没选择 RPM 包的情况
-    }
-
-    return res;
 }
 
 void MainWindow::sendNotify()
@@ -330,10 +266,10 @@ void MainWindow::showMoreInfoDialog()
     Dialog->show();
 }
 
-void MainWindow::dropFileHandler(QString filename)
+void MainWindow::gotRpmHandler(QString filename)
 {
     this->setArgPath(filename.toStdString());
-    loadRpmInfo();      // 开始加载信息，显示加载中界面
+    loadRpmInfo();
 }
 
 void MainWindow::exitOnFinished()

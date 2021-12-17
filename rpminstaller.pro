@@ -17,19 +17,24 @@ CONFIG += c++11
 
 # 所有的源文件
 SOURCES += \
-    installthread.cpp \
+    common/installthread.cpp \
     main.cpp \
-    mainwindow.cpp \
-    dragdropfilearea.cpp \
-    pkgdetaildialog.cpp
+    pages/mainwindow.cpp \
+    common/dragdropfilearea.cpp \
+    pages/selectpage.cpp \
+    pages/pkgdetaildialog.cpp
 
 # 所有的头文件
 HEADERS += \
-    datastructs.h \
-    installthread.h \
-    mainwindow.h \
-    dragdropfilearea.h \
-    pkgdetaildialog.h
+    common/datastructs.h \
+    common/installthread.h \
+    pages/mainwindow.h \
+    common/dragdropfilearea.h \
+    pages/selectpage.h \
+    pages/pkgdetaildialog.h
+
+# UI 设计文件
+FORMS +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,4 +42,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    imageassets.qrc
+    resources/imageassets.qrc
