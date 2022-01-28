@@ -3,35 +3,56 @@
 #### 介绍
 Deepin rpm installer on openEuler
 
+#### 正在开发中的全新界面设计
+
+![image-20220127172022925](img/image-20220127172022925.png)
+
+**RpmSelectPage**
+
+```
+size: 500px*350px
+background-color: #F8F8F8
+文本字号 11 ，距按钮 28px ，#4D4F53
+```
+
+![image-20220127191017775](img/image-20220127191017775.png)
+
+
+**InstallConfirmPage**
+
+![image-20220127192150529](img/image-20220127192150529.png)
+
+除按钮外，所有字体均为 11 号，右侧小标题为 Bold ，其他均为 Regular
+
+右侧圆角矩形背景的圆角半径 6px
+
+日志文本框：
+
+![image-20220127195535076](img/image-20220127195535076.png)
+
+
+
+![image-20220127200641473](img/image-20220127200641473.png)
+
+**InstalledPage**
+
+![image-20220127195158238](img/image-20220127195158238.png)
+
+安装成功 14号，`#39A300`；显示安装日志 10 号，`#1890FF`
+
+安装失败 14号，`#DA0000`
+
+
+
 #### 软件架构
-软件架构说明
+待补充
 
 
 #### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+待补充
 
 #### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+待补充
 
 #### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+请提 issue 或与其他贡献者邮件联系
