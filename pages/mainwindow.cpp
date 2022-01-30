@@ -1,8 +1,9 @@
-#include "mainwindow.h"
-#include "common/dragdropfilearea.h"
-#include "common/installthread.h"
+#include "pages/mainwindow.h"
 #include "pages/pkgdetaildialog.h"
 #include "pages/selectpage.h"
+
+#include "common/dragdropfilearea.h"
+#include "common/installthread.h"
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -16,27 +17,19 @@
 #include <QPainter>
 #include <QTextEdit>
 
-MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :   // 直接通过构造器来搞
-    QMainWindow(parent)
+MainWindow::MainWindow(int argc, char **argv, QWidget *parent)
+    : QMainWindow(parent)
 {
-    setWindowTitle("RPM 安装器");
-
-    // 下面两行让窗口创建在屏幕正中间
-    QDesktopWidget *desktop = QApplication::desktop();
-    setFixedSize(550,350);
-    move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
-
-    this->setArgc(argc);
-    this->getArgc();
-    if(argc==1) {                                                   // 没有启动参数输入，初始化文件选择界面
-        SelectPage *selectPage = new SelectPage();
-        setCentralWidget(selectPage);
-        connect(selectPage, &SelectPage::filenameReceived, this, &MainWindow::gotRpmHandler);      // 接收选择的文件（拖放 / 文件选择器选择）
-    } else {                    // 这里有参数输入了，目前无视连续输入多个的情况，只会处理第一个
-        this->setArgPath(std::string(argv[1]));
-        loadRpmInfo();
+    initUI();
+    if(argc==1) {                                 // 无参数启动，初始化文件选择界面
+        toRpmSelectPage();
+    } else {                                      // 有参数启动，目前无视连续输入多个的情况，只会处理第一个
+        RPMInfoStruct tmp;
+        tmp.dir = QString(argv[1]);
+        toSingleInstallPage(tmp);
     }
-
+    QDesktopWidget *desktop = QApplication::desktop();
+    move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
 }
 
 MainWindow::~MainWindow()
@@ -44,6 +37,39 @@ MainWindow::~MainWindow()
     delete installThread;
     installThread = nullptr;
 }
+
+void MainWindow::initUI()
+{
+    setStyleSheet("background-color:#F8F8F8");
+    setWindowTitle(tr("Deepin RPM Installer"));
+
+    pages = new QStackedWidget();
+    rpmSelectPage = new RpmSelectPage();
+    singleInstallPage = new SingleInstallPage();
+    pages->addWidget(rpmSelectPage);                            // index: 0
+    pages->addWidget(singleInstallPage);                        // index: 1
+    connect(rpmSelectPage, &RpmSelectPage::toSingleInstallPage, this, &MainWindow::toSingleInstallPage);
+    connect(singleInstallPage, &SingleInstallPage::toRpmSelectPage, this, &MainWindow::toRpmSelectPage);
+
+    setCentralWidget(pages);
+}
+
+void MainWindow::toRpmSelectPage()
+{
+    pages->setCurrentIndex(0);
+    setFixedSize(500,350);
+}
+
+void MainWindow::toSingleInstallPage(RPMInfoStruct selectedRpm)
+{
+    pages->setCurrentIndex(1);
+    singleInstallPage->loadRpm(selectedRpm);
+
+    setFixedSize(700,500);
+    QDesktopWidget *desktop = QApplication::desktop();
+    move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
+}
+
 
 bool MainWindow::setArgc(int argsC)
 {
