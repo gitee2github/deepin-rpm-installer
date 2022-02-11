@@ -30,7 +30,7 @@ Item {
             }
             Label {
                 id: rpmName
-                text: "RPM Name"
+                text: rpmInfo.name
                 font.pixelSize: 14
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: pkgIcon.bottom

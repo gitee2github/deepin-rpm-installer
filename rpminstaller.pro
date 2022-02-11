@@ -31,6 +31,7 @@ HEADERS += \
     common/consts.h \
     common/datastructs.h \
     common/installthread.h \
+    common/rpminfo.h \
     pages/mainwindow.h \
     common/dragdropfilearea.h \
     pages/rpmselectpage.h \
