@@ -1,6 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "pages/rpmselectpage.h"
+#include "pages/singleinstallpage.h"
+
+#include "common/datastructs.h"
+#include "common/installthread.h"
+
 #include <QMainWindow>
 #include <QLabel>
 #include <iostream>
@@ -8,9 +14,8 @@
 #include <QString>
 #include <QVector>
 #include <QTextEdit>
+#include <QStackedWidget>
 
-#include "common/datastructs.h"
-#include "common/installthread.h"
 
 class MainWindow : public QMainWindow
 {
@@ -36,7 +41,13 @@ public:
     void loadRpmInfo();
 
 private:
-    QLabel *helloLabel;         // 该类的实例，也就是主窗口，应该可以用这玩意
+    QStackedWidget *pages = nullptr;                    ///< 所有界面的容器
+
+    RpmSelectPage *rpmSelectPage = nullptr;             ///< RPM 选择界面。在无参数输入启动、安装完成后返回时显示该页面
+
+    SingleInstallPage *singleInstallPage = nullptr;     ///< 单包安装界面。在单参数启动时显示该页面
+
+    QLabel *helloLabel;
     int argCount;
     std::string argPath;
 
@@ -46,7 +57,26 @@ private:
 
     InstallThread *installThread = nullptr;
 
+    /**
+     * @brief init UI for installer.
+     *
+     * 该函数会初始化 pages ，装入 RpmSelectPage ，但不会直接显示出来
+     */
+    void initUI();
+
 public slots:
+    /**
+     * @brief Display RpmSelectPage
+     */
+    void toRpmSelectPage();
+
+    /**
+     * @brief Display SingleInstallPage
+     */
+    void toSingleInstallPage(RPMInfoStruct selectedRpm);
+
+
+
     void onRPMInfoLoaded(QVector<RPMInfoStruct> rpmArray);
 
     void appendLog(QString log);

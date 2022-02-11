@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg    # 包含的模块
+QT       += core gui svg quickwidgets    # 包含的模块
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,17 +21,22 @@ SOURCES += \
     main.cpp \
     pages/mainwindow.cpp \
     common/dragdropfilearea.cpp \
+    pages/rpmselectpage.cpp \
     pages/selectpage.cpp \
-    pages/pkgdetaildialog.cpp
+    pages/pkgdetaildialog.cpp \
+    pages/singleinstallpage.cpp
 
 # 所有的头文件
 HEADERS += \
+    common/consts.h \
     common/datastructs.h \
     common/installthread.h \
     pages/mainwindow.h \
     common/dragdropfilearea.h \
+    pages/rpmselectpage.h \
     pages/selectpage.h \
-    pages/pkgdetaildialog.h
+    pages/pkgdetaildialog.h \
+    pages/singleinstallpage.h
 
 # UI 设计文件
 FORMS +=
@@ -42,4 +47,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    qml/qmls.qrc \
     resources/imageassets.qrc
