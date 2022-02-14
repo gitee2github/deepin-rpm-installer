@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.11
 
 Item {
     id: root
@@ -26,7 +27,7 @@ Item {
                 antialiasing: true
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
-                anchors.topMargin: 80
+                anchors.topMargin: 60
             }
             Label {
                 id: rpmName
@@ -34,14 +35,34 @@ Item {
                 font.pixelSize: 14
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: pkgIcon.bottom
-                anchors.topMargin: 20
+                anchors.topMargin: 15
             }
             Label {
                 id: versionRelease
-                text: "1.0.0-1.up1"
+                text: rpmInfo.versionRelease
                 font.pixelSize: 12
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: rpmName.bottom
+            }
+            Label {
+                id: summary
+                text: rpmInfo.summary
+                font.pixelSize: 12
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: versionRelease.bottom
+                anchors.topMargin: 30
+                wrapMode: "WordWrap"
+                width: 180
+                anchors.leftMargin: 20
+            }
+            Button {
+                text: "Install"
+                width: 160
+                height: 30
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 50
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: installPage.startPkgOperation("install")
             }
         }
 
@@ -55,9 +76,94 @@ Item {
             anchors.leftMargin: 8
             anchors.topMargin: 8
             radius: 8
+
             ScrollView {
                 id: detailScrollView
                 ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                contentWidth: parent.width
+                contentHeight: archTitle.height+arch.height+licenseTitle.height+license.height+descriptionTitle.height+description.height+requiresTitle.height+requires.height+providesTitle.height+provides.height+165
+                clip: true
+                anchors.fill: parent
+                anchors.left: parent.left
+                anchors.leftMargin: 30
+                Label {
+                    id: archTitle
+                    text: "Architecture"
+                    font.bold: true
+                    anchors.top: parent.top
+                    anchors.topMargin: 30
+                }
+                Label {
+                    id: arch
+                    text: rpmInfo.arch
+                    anchors.top: archTitle.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Label {
+                    id: licenseTitle
+                    text: "License"
+                    font.bold: true
+                    anchors.top: arch.bottom
+                    anchors.topMargin: 20
+                }
+                Label {
+                    id: license
+                    text: rpmInfo.license
+                    anchors.top: licenseTitle.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Label {
+                    id: descriptionTitle
+                    text: "Description"
+                    font.bold: true
+                    anchors.top: license.bottom
+                    anchors.topMargin: 20
+                }
+                Label {
+                    id: description
+                    text: rpmInfo.description
+                    wrapMode: "WordWrap"
+                    width: 400
+                    anchors.top: descriptionTitle.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Label {
+                    id: requiresTitle
+                    text: "Requires"
+                    font.bold: true
+                    anchors.top: description.bottom
+                    anchors.topMargin: 20
+                }
+                Label {
+                    id: requires
+                    text: rpmInfo.pkgRequiresStr
+                    anchors.top: requiresTitle.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
+                Label {
+                    id: providesTitle
+                    text: "Provides"
+                    font.bold: true
+                    height: 20
+                    anchors.top: requires.bottom
+                    anchors.topMargin: 20
+                }
+                Label {
+                    id: provides
+                    text: rpmInfo.pkgProvidesStr
+                    anchors.top: providesTitle.bottom
+                    anchors.topMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                }
             }
         }
 
