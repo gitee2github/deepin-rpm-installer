@@ -17,8 +17,8 @@ class RPMInfo : public QObject
     Q_PROPERTY(QString versionRelease READ versionRelease)
     Q_PROPERTY(QString summary READ summary)
     Q_PROPERTY(QString description READ description)
-    Q_PROPERTY(QStringList pkgProvides READ pkgProvides)
-    Q_PROPERTY(QStringList pkgRequires READ pkgRequires)
+    Q_PROPERTY(QString pkgProvidesStr READ pkgProvidesStr)
+    Q_PROPERTY(QString pkgRequiresStr READ pkgRequiresStr)
     Q_PROPERTY(QString installedVersion READ installedVersion)
     Q_PROPERTY(QString statusDescription READ statusDescription)
     Q_PROPERTY(QString actionNotify READ actionNotify)
@@ -31,8 +31,8 @@ public:
     void setVersionRelease(const QString &versionRelease) { m_versionRelease = versionRelease; }
     void setSummary(const QString &summary) { m_summary = summary; }
     void setDescription(const QString &description) { m_description = description; }
-    void setProvides(const QStringList pkgProvides) { m_pkgProvides = pkgProvides; }
-    void setRequires(const QStringList pkgRequires) { m_pkgRequires = pkgRequires; }
+    void setProvides(const QString pkgProvides) { m_pkgProvides = pkgProvides; }
+    void setRequires(const QString pkgRequires) { m_pkgRequires = pkgRequires; }
     void setInstalledVersion(const QString &installedVersion) { m_installedVersion = installedVersion; }
     void setStatus(const PkgStatus &status) { m_status = status; }
     void setStatusDescription(const QString &statusDescription) { m_statusDescription = statusDescription; }
@@ -45,8 +45,8 @@ public:
     QString versionRelease() const { return m_versionRelease; }
     QString summary() const { return m_summary; }
     QString description() const { return m_description; }
-    QStringList pkgProvides() const { return m_pkgProvides; }
-    QStringList pkgRequires() const { return m_pkgRequires; }
+    QString pkgProvidesStr() const { return m_pkgProvides; }
+    QString pkgRequiresStr() const { return m_pkgRequires; }
     QString installedVersion() const { return m_installedVersion; }
     QString statusDescription() const { return m_statusDescription; }
     QString actionNotify() const { return m_actionNotify; }
@@ -60,8 +60,8 @@ private:
     QString m_summary;                ///< ${summary}
     QString m_description;            ///< %{description}
 
-    QStringList m_pkgProvides;        ///< provides
-    QStringList m_pkgRequires;        ///< requires
+    QString m_pkgProvides;        ///< provides
+    QString m_pkgRequires;        ///< requires
 
     QString m_installedVersion;       ///< 已安装的版本（当且仅当已有值，值不为空）
 

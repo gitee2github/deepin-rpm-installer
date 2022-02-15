@@ -48,16 +48,16 @@ public slots:
      */
     void onOperationFinished(OperateMode mode, OperateFinishStatus finishStatus);
 
+    /**
+     * @brief start RPM Package operation ( install / uninstall / reinstall )
+     */
+    void startPkgOperation(QString mode);
+
 private:
     /**
      * @brief init loading UI
      */
     void initLoadingUI();
-
-    /**
-     * @brief start RPM Package operation ( install / uninstall / reinstall )
-     */
-    void startPkgOperation(OperateMode mode);
 
 
     RPMInfoStruct rpm;                          ///< rpm info for this page
